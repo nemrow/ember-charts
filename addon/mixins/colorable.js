@@ -83,9 +83,11 @@ export default Ember.Mixin.create({
   getSeriesColor: Ember.computed('numColorSeries', 'getColorRange', 'getColorScale', 'selectedSeedColor', function() {
     var numColorSeries = this.get('numColorSeries');
     var selectedSeedColor = this.get('selectedSeedColor');
+    var defaultColors = this.get("defaultColors");
 
     var _this = this;
     return function(d, i) {
+      if (defaultColors && defaultColors[i]) return defaultColors[i];
       var seedColor = d.color || selectedSeedColor;
       var colorRange = _this.get('getColorRange')(seedColor);
       var colorScale = _this.get('getColorScale')(seedColor);
