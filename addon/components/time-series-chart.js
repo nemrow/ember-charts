@@ -681,32 +681,38 @@ const TimeSeriesChartComponent = ChartComponent.extend(LegendMixin,
   // 6th line: ~3px, 33% tinted, dotted
   lineColorFn: Ember.computed(function() {
     return (d, i) => {
-      var ii;
-      switch (i) {
-        case 0:
-          ii = 0;
-          break;
-        case 1:
-          ii = 2;
-          break;
-        case 2:
-          ii = 0;
-          break;
-        case 3:
-          ii = 2;
-          break;
-        case 4:
-          ii = 0;
-          break;
-        case 5:
-          ii = 1;
-          break;
-        default:
-          ii = i;
-      }
-      return this.get('getSeriesColor')(d, ii);
+      var lineColorIndex = this._lineColorIndexGenerator(i)
+      return this.get('getSeriesColor')(d, lineColorIndex);
     };
   }),
+
+  _lineColorIndexGenerator (i) {
+    if (this.get("defaultColor") && this.get("defaultColor")[i]) return i;
+    var ii;
+    switch (i) {
+      case 0:
+        ii = 0;
+        break;
+      case 1:
+        ii = 2;
+        break;
+      case 2:
+        ii = 0;
+        break;
+      case 3:
+        ii = 2;
+        break;
+      case 4:
+        ii = 0;
+        break;
+      case 5:
+        ii = 1;
+        break;
+      default:
+        ii = i;
+    }
+    return i;
+  },
 
   lineAttrs: Ember.computed('line', 'getSeriesColor', function() {
     return {
